@@ -6,6 +6,8 @@ Includes a landing page, signup/login, dashboard, holdings, positions, orders, a
 > ⚠️ This project is for **educational purposes only**. Not affiliated with Zerodha.
 
 ---
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a98e9c3e-12eb-469b-af1e-812be536337d" />
+
 
 ---
 
