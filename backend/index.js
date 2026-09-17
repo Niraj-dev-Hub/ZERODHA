@@ -26,7 +26,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(
     cors({
-        origin: ["http://localhost:3000", "http://localhost:3001"],
+        origin: ["https://zerodha-frontd.vercel.app/", "https://zerodh-dash.vercel.app/"],
         credentials: true,
     })
 );
