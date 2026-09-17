@@ -1,12 +1,12 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 function Hero() {
   return (
     <div className="container p-5 mb-5">
       <div className="row   text-center">
         <img
-          src="media/images/homeHero.png "
+          src="media/images/homeHero.png"
           alt="Hero Image"
           className="mb-5"
         />
