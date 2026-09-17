@@ -4,16 +4,16 @@ import {Link} from 'react-router-dom';
 
 
 
-const Menu = () => {
+const Menu = ({ username }) => {
  const [selectedMenu, setSelectedMenu] =useState(0);
- const [isProfileDropDownOpen, setIsProfileDropDownOpen] =useState(false);
 
  const handleMenuClick = (index) =>{
   setSelectedMenu (index);
  };
 
- const handleProfileClick = (index) =>{
-  setIsProfileDropDownOpen (!isProfileDropDownOpen);
+ const handleLogout = () => {
+  document.cookie = "token=; Max-Age=0; path=/";
+  window.location.href = "http://localhost:3000/login";
  };
 
  const menuClass = "menu";
@@ -21,7 +21,7 @@ const Menu = () => {
 
   return (
     <div className="menu-container">
-      <img src="logo.png" style={{ width: "50px" }} />
+      <img src="logo.png" alt="Zerodha logo" style={{ width: "50px" }} />
       <div className="menus">
         <ul>
           <li>
@@ -104,7 +104,11 @@ const Menu = () => {
         <hr />
         <div className="profile" >
           <div className="avatar">ZU</div>
-          <p className="username">USERID</p>
+          <p className="username ">{username || "USERID"}</p>
+          <button type="button" className="logout-button  " onClick={handleLogout}
+          style={{ fontSize: "12px", padding: "5px 5px", margin: "8px", backgroundColor: "#f41f10d2", color: "white", border: "none", borderRadius: "4px", cursor: "pointer" }}>
+            Logout
+          </button>
         </div>
 
       </div>

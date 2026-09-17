@@ -737,16 +737,18 @@ hr {
   background-color: #4184f3;
   color: #fff;
   font-weight: 400;
-  font-size: 0.8rem;
+  font-size: 1rem;
   border: 0.7px solid #4184f3;
+  margin-right: 5px;
 }
 
 .sell {
   background-color: #ff5722;
   color: #fff;
   font-weight: 400;
-  font-size: 0.8rem;
+  font-size: 1rem;
   border: 0.7px solid #ff5722;
+  margin-right: 5px;
 }
 
 .action {

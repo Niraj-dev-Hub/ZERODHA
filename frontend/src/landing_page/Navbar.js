@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <div classNameName="container">
+    <div className="container">
       <nav 
       className="navbar border-bottom navbar-expand-lg"
        style={{backgroundColor:"white"}}
@@ -27,6 +27,7 @@ function Navbar() {
           >
             <span className="navbar-toggler-icon"></span>
           </button>
+          
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
 
 
@@ -60,8 +61,6 @@ function Navbar() {
               
              
             </ul>
-            
-             
             </form>
           </div>
         </div>

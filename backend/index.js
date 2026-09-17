@@ -4,6 +4,9 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const authRoute = require("./Routes/AuthRoute");
+const cookieParser = require("cookie-parser");
+
 
 
 const { HoldingModel } = require('./model/HoldingSchemaModel');
@@ -20,8 +23,16 @@ const uri = process.env.MONGO_URL;
 
 const app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
+app.use(
+    cors({
+        origin: ["http://localhost:3000", "http://localhost:3001"],
+        credentials: true,
+    })
+);
+app.use(cookieParser());
+app.use(express.json());
+app.use("/", authRoute);
 
 
 // app.get("/addHoldings", async(req, res) =>{
@@ -212,6 +223,21 @@ app.get("/allPositions", async(req, res) =>{
 });
 
 
+app.post("/newOrder", async(req, res) =>{
+    let newOrder = new OrderModel({
+    name: req.body.name,
+    qty:req.body.qty,
+    price:req.body.price,
+    mode: req.body.mode, 
+    });
+    
+    newOrder.save().then((result) =>{
+        res.json({message:"Order placed successfully!"});
+    }).catch((err) =>{
+        res.status(500).json({message:"Failed to place order", error: err.message});
+    });
+});
+
 
 app.listen(PORT, async () => {
     console.log(`Server is running on port ${PORT}`);
@@ -223,4 +249,4 @@ app.listen(PORT, async () => {
         console.error("Database connection failed:", error.message);
         process.exit(1);
     }
-})
+});
