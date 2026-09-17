@@ -11,7 +11,10 @@ const Holdings = () => {
 
   useEffect(() =>{
 
-    axios.get("http://localhost:3005/allHoldings").then((res) =>{
+    axios.get("https://zerodha-backend-ucqv.onrender.com/allHoldings"),
+      {
+    withCredentials: true
+  }.then((res) =>{
       console.log(res.data);
       setAllHoldings(res.data);
     }).catch((err) => {

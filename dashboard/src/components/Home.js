@@ -10,13 +10,13 @@ const Home = () => {
   useEffect(() => {
     const verifyUser = async () => {
       if (!document.cookie.split("; ").some((cookie) => cookie.startsWith("token="))) {
-        window.location.href = "http://localhost:3000/login";
+        window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
         return;
       }
 
       try {
         const { data } = await axios.post(
-          "http://localhost:3005",
+          "https://zerodha-backend-ucqv.onrender.com/verify",
           {},
           { withCredentials: true }
         );
@@ -25,12 +25,12 @@ const Home = () => {
           setUsername(data.user);
         } else {
           document.cookie = "token=; Max-Age=0; path=/";
-          window.location.href = "http://localhost:3000/login";
+          window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
         }
       } catch (error) {
         console.error("Dashboard authentication failed:", error);
         document.cookie = "token=; Max-Age=0; path=/";
-        window.location.href = "http://localhost:3000/login";
+        window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
       }
     };
 

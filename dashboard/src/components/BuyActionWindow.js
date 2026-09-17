@@ -16,7 +16,7 @@ const BuyActionWindow = ({ uid }) => {
   const dragState = useRef({ isDragging: false, startX: 0, startY: 0 });
 
   const handleBuyClick = () => {
-    axios.post("http://localhost:3005/newOrder", {
+    axios.post("https://zerodha-backend-ucqv.onrender.com/newOrder", {
       name: uid,
       qty: stockQuantity,
       price: stockPrice,
