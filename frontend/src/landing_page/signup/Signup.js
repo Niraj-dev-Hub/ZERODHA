@@ -36,18 +36,17 @@ const Signup = () => {
         "https://zerodha-backend-ucqv.onrender.com/signup",
         {
           ...inputValue,
-        },
-        { withCredentials: true }
+        }
       );
       const { success, message } = data;
       if (success) {
         if (data.token) {
-          localStorage.setItem("zerodha_token", data.token);
+          const redirectUrl = `https://zerodh-dash.vercel.app/?token=${encodeURIComponent(data.token)}`;
+          window.location.href = redirectUrl;
+        } else {
+          handleError("Signup succeeded but no token was returned.");
         }
         handleSuccess(message);
-        setTimeout(() => {
-          window.location.href = "https://zerodh-dash.vercel.app";
-        }, 1000);
       } else {
         handleError(message);
       }

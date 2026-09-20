@@ -9,6 +9,13 @@ const Home = () => {
 
   useEffect(() => {
     const verifyUser = async () => {
+      const urlToken = new URLSearchParams(window.location.search).get("token");
+
+      if (urlToken) {
+        localStorage.setItem("zerodha_token", urlToken);
+        window.history.replaceState({}, "", window.location.pathname);
+      }
+
       const token = localStorage.getItem("zerodha_token");
 
       if (!token) {
@@ -21,7 +28,6 @@ const Home = () => {
           "https://zerodha-backend-ucqv.onrender.com/verify",
           {},
           {
-            withCredentials: true,
             headers: {
               Authorization: `Bearer ${token}`,
             },
