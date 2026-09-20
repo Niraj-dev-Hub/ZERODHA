@@ -46,7 +46,7 @@ const Signup = () => {
         }
         handleSuccess(message);
         setTimeout(() => {
-          window.location.href = "https://zerodh-dash.vercel.app/";
+          window.location.href = "https://zerodh-dash.vercel.app";
         }, 1000);
       } else {
         handleError(message);
