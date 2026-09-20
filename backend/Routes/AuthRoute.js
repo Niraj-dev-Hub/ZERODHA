@@ -30,6 +30,8 @@ router.get("/signup", (req, res) => {
 });
 
 router.post('/', userVerification);
+router.post('/verify', userVerification);
+router.get('/verify', userVerification);
 router.post("/signup", Signup);
 router.post('/login', Login);
 

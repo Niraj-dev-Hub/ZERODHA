@@ -9,8 +9,10 @@ const Home = () => {
 
   useEffect(() => {
     const verifyUser = async () => {
-      if (!document.cookie.split("; ").some((cookie) => cookie.startsWith("token="))) {
-        window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
+      const token = localStorage.getItem("zerodha_token");
+
+      if (!token) {
+        window.location.href = "https://zerodha-frontd.vercel.app/login";
         return;
       }
 
@@ -18,19 +20,26 @@ const Home = () => {
         const { data } = await axios.post(
           "https://zerodha-backend-ucqv.onrender.com/verify",
           {},
-          { withCredentials: true }
+          {
+            withCredentials: true,
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
 
         if (data.status) {
           setUsername(data.user);
         } else {
+          localStorage.removeItem("zerodha_token");
           document.cookie = "token=; Max-Age=0; path=/";
-          window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
+          window.location.href = "https://zerodha-frontd.vercel.app/login";
         }
       } catch (error) {
         console.error("Dashboard authentication failed:", error);
+        localStorage.removeItem("zerodha_token");
         document.cookie = "token=; Max-Age=0; path=/";
-        window.location.href = "https://zerodha-backend-ucqv.onrender.com/login";
+        window.location.href = "https://zerodha-frontd.vercel.app/login";
       }
     };
 

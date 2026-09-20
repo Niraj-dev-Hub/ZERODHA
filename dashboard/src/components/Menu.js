@@ -12,8 +12,9 @@ const Menu = ({ username }) => {
  };
 
  const handleLogout = () => {
+  localStorage.removeItem("zerodha_token");
   document.cookie = "token=; Max-Age=0; path=/";
-  window.location.href = "http://localhost:3000/login";
+  window.location.href = "https://zerodha-frontd.vercel.app/login";
  };
 
  const menuClass = "menu";

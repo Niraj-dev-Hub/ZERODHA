@@ -39,6 +39,9 @@ const Login = () => {
       console.log(data);
       const { success, message } = data;
       if (success) {
+        if (data.token) {
+          localStorage.setItem("zerodha_token", data.token);
+        }
         handleSuccess(message);
         setTimeout(() => {
           window.location.href = "https://zerodh-dash.vercel.app/";
