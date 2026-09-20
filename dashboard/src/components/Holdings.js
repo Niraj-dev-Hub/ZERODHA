@@ -9,18 +9,18 @@ const Holdings = () => {
        
   const [allHoldings, setAllHoldings] = useState([]);
 
-  useEffect(() =>{
-
-    axios.get("https://zerodha-backend-ucqv.onrender.com/allHoldings"),
-      {
-    withCredentials: true
-  }.then((res) =>{
-      console.log(res.data);
-      setAllHoldings(res.data);
-    }).catch((err) => {
+  useEffect(() => {
+    axios
+      .get("https://zerodha-backend-ucqv.onrender.com/allHoldings", {
+        withCredentials: true,
+      })
+      .then((res) => {
+        console.log(res.data);
+        setAllHoldings(res.data);
+      })
+      .catch((err) => {
         console.error("API Error:", err);
       });
-
   }, []);
 
   const labels = allHoldings.map((stock) => stock.name);
