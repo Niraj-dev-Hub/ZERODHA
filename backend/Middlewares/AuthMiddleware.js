@@ -2,6 +2,8 @@ const {UserModel} = require("../model/UserSchemaModel");
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
+const JWT_SECRET = process.env.TOKEN_KEY || "zerodha_secret_key";
+
 const getToken = (req) => {
   if (req.cookies && req.cookies.token) return req.cookies.token;
 
@@ -21,7 +23,7 @@ module.exports.userVerification = (req, res) => {
     return res.json({ status: false });
   }
 
-  jwt.verify(token, process.env.TOKEN_KEY, async (err, data) => {
+  jwt.verify(token, JWT_SECRET, async (err, data) => {
     if (err) {
       return res.json({ status: false });
     }
