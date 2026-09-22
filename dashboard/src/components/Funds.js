@@ -1,13 +1,52 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 
 const Funds = () => {
+  const [holdings, setHoldings] = useState([]);
+  const [positions, setPositions] = useState([]);
+
+  useEffect(() => {
+    const fetchAccountData = async () => {
+      try {
+        const [holdingsRes, positionsRes] = await Promise.all([
+          axios.get("https://zerodha-backend-ucqv.onrender.com/allHoldings"),
+          axios.get("https://zerodha-backend-ucqv.onrender.com/allPositions"),
+        ]);
+
+        setHoldings(holdingsRes.data || []);
+        setPositions(positionsRes.data || []);
+      } catch (error) {
+        console.error("Account funds fetch failed:", error);
+      }
+    };
+
+    fetchAccountData();
+  }, []);
+
+  const totalInvestment = holdings.reduce(
+    (total, stock) => total + Number(stock.avg || 0) * Number(stock.qty || 0),
+    0
+  );
+  const totalValue = holdings.reduce(
+    (total, stock) => total + Number(stock.price || 0) * Number(stock.qty || 0),
+    0
+  );
+  const pnl = totalValue - totalInvestment;
+  const totalExposure = positions.reduce(
+    (total, stock) => total + Number(stock.price || 0) * Number(stock.qty || 0),
+    0
+  );
+
   return (
     <>
       <div className="funds">
-        <p>Instant, zero-cost fund transfers with UPI </p>
-        <Link className="btn btn-green">Add funds</Link>
-        <Link className="btn btn-blue">Withdraw</Link>
+        <p>Instant, zero-cost fund transfers with UPI</p>
+        <button type="button" className="btn btn-green">
+          Add funds
+        </button>
+        <button type="button" className="btn btn-blue">
+          Withdraw
+        </button>
       </div>
 
       <div className="row">
@@ -19,57 +58,40 @@ const Funds = () => {
           <div className="table">
             <div className="data">
               <p>Available margin</p>
-              <p className="imp colored">4,043.10</p>
+              <p className="imp colored">₹{(totalValue * 0.12).toFixed(2)}</p>
             </div>
             <div className="data">
               <p>Used margin</p>
-              <p className="imp">3,757.30</p>
+              <p className="imp">₹{(totalExposure * 0.2).toFixed(2)}</p>
             </div>
             <div className="data">
               <p>Available cash</p>
-              <p className="imp">4,043.10</p>
+              <p className="imp">₹{(totalValue * 0.18).toFixed(2)}</p>
             </div>
             <hr />
             <div className="data">
-              <p>Opening Balance</p>
-              <p>4,043.10</p>
+              <p>Investment</p>
+              <p>₹{totalInvestment.toFixed(2)}</p>
             </div>
             <div className="data">
-              <p>Opening Balance</p>
-              <p>3736.40</p>
+              <p>Current Value</p>
+              <p>₹{totalValue.toFixed(2)}</p>
             </div>
             <div className="data">
-              <p>Payin</p>
-              <p>4064.00</p>
-            </div>
-            <div className="data">
-              <p>SPAN</p>
-              <p>0.00</p>
-            </div>
-            <div className="data">
-              <p>Delivery margin</p>
-              <p>0.00</p>
+              <p>P&L</p>
+              <p className={pnl >= 0 ? "profit" : "loss"}>₹{pnl.toFixed(2)}</p>
             </div>
             <div className="data">
               <p>Exposure</p>
-              <p>0.00</p>
+              <p>₹{totalExposure.toFixed(2)}</p>
             </div>
-            <div className="data">
-              <p>Options premium</p>
-              <p>0.00</p>
-            </div>
-            <hr />
             <div className="data">
               <p>Collateral (Liquid funds)</p>
-              <p>0.00</p>
-            </div>
-            <div className="data">
-              <p>Collateral (Equity)</p>
-              <p>0.00</p>
+              <p>₹{(totalValue * 0.1).toFixed(2)}</p>
             </div>
             <div className="data">
               <p>Total Collateral</p>
-              <p>0.00</p>
+              <p>₹{(totalValue * 0.12 + totalExposure * 0.08).toFixed(2)}</p>
             </div>
           </div>
         </div>
@@ -77,7 +99,9 @@ const Funds = () => {
         <div className="col">
           <div className="commodity">
             <p>You don't have a commodity account</p>
-            <Link className="btn btn-blue">Open Account</Link>
+            <button type="button" className="btn btn-blue">
+              Open Account
+            </button>
           </div>
         </div>
       </div>

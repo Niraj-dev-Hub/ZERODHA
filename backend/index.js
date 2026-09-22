@@ -222,19 +222,33 @@ app.get("/allPositions", async(req, res) =>{
     res.json(allPositions);
 });
 
+app.get("/allOrders", async(req, res) =>{
+    try {
+        const allOrders = await OrderModel.find({}).sort({ _id: -1 });
+        res.json(allOrders);
+    } catch (error) {
+        res.status(500).json({ message: "Failed to load orders", error: error.message });
+    }
+});
 
 app.post("/newOrder", async(req, res) =>{
+    const { name, qty, price, mode } = req.body;
+
+    if (!name || !qty || !price || !mode) {
+        return res.status(400).json({ message: "name, qty, price and mode are required" });
+    }
+
     let newOrder = new OrderModel({
-    name: req.body.name,
-    qty:req.body.qty,
-    price:req.body.price,
-    mode: req.body.mode, 
+        name,
+        qty: Number(qty),
+        price: Number(price),
+        mode,
     });
-    
-    newOrder.save().then((result) =>{
-        res.json({message:"Order placed successfully!"});
-    }).catch((err) =>{
-        res.status(500).json({message:"Failed to place order", error: err.message});
+
+    newOrder.save().then(() => {
+        res.json({ message: "Order placed successfully!" });
+    }).catch((err) => {
+        res.status(500).json({ message: "Failed to place order", error: err.message });
     });
 });
 

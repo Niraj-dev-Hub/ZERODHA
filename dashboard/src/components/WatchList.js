@@ -129,47 +129,33 @@ const WatchListItem = ({ stock }) => {
 };
 
 const WatchListActions = ({ uid }) => {
-  const { openBuyWindow } = useContext(GeneralContext);
+  const { openTradeWindow } = useContext(GeneralContext);
 
-  return(
-  <span className="actions">
-    <Tooltip 
-    title="Buy (B)" 
-    placement="top" 
-    arrow 
-    TransitionComponent={Grow}>
-      <button className="buy" onClick={() => openBuyWindow(uid)}>Buy</button>
-    </Tooltip>
+  return (
+    <span className="actions">
+      <Tooltip title="Buy (B)" placement="top" arrow TransitionComponent={Grow}>
+        <button type="button" className="buy" onClick={() => openTradeWindow(uid, "BUY")}>
+          Buy
+        </button>
+      </Tooltip>
 
-     <Tooltip 
-    title="Sell (S)" 
-    placement="top" 
-    arrow 
-    TransitionComponent={Grow}>
-      <button className="sell">Sell</button>
-    </Tooltip>
+      <Tooltip title="Sell (S)" placement="top" arrow TransitionComponent={Grow}>
+        <button type="button" className="sell" onClick={() => openTradeWindow(uid, "SELL")}>
+          Sell
+        </button>
+      </Tooltip>
 
-     <Tooltip 
-    title="Analytics (A)" 
-    placement="top" 
-    arrow 
-    TransitionComponent={Grow}>
-     
-      <button className="action" >
-      <BarChartOutlined className="icon"/>
-      </button>
-    </Tooltip>
+      <Tooltip title="Analytics (A)" placement="top" arrow TransitionComponent={Grow}>
+        <button type="button" className="action" onClick={() => openTradeWindow(uid, "ANALYZE")}>
+          <BarChartOutlined className="icon" />
+        </button>
+      </Tooltip>
 
-     <Tooltip 
-    title="More" 
-    placement="top" 
-    arrow 
-    TransitionComponent={Grow}>
-       <button className="action" >
-      <MoreHoriz className="icon"/>
-      </button>
-    </Tooltip>
-  </span>
-
+      <Tooltip title="More" placement="top" arrow TransitionComponent={Grow}>
+        <button type="button" className="action">
+          <MoreHoriz className="icon" />
+        </button>
+      </Tooltip>
+    </span>
   );
 };

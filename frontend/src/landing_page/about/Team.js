@@ -14,32 +14,30 @@ function Team() {
        style={{lineHeight:"2", fontSize:"1.1em"}}
       >
         <div className="col-6 text-center  ">
-          <img src='media/images/nithinKamath.jpg' alt='Nithin Image'
-           style={{borderRadius:"50%", width:"50%"}}
+          <img src='media/images/profile1.png' alt='Nir Image'
+           style={{borderRadius:"50%", width:"50%" }}
           />
           <br/> <br/> 
-           <h4>Nithin Kamath</h4>
-           <h6>Founder, CEO</h6>
+           <h4>Niraj Gupta</h4>
+           <h6>Mern Stack Developer</h6>
         </div>
 
 
         <div className="col-6  ">
           <p>
-            Nithin bootstrapped and founded Zerodha in 2010 to overcome the hurdles he faced during his decade long stint as a trader. Today, Zerodha has changed the landscape of the Indian broking industry.
-
+I’m Niraj Gupta, a Computer Engineering student and aspiring software engineer from Nepal.
 
           </p>
           <p>
-          He is a member of the SEBI Secondary Market Advisory Committee (SMAC) and the Market Data Advisory Committee (MDAC).
-          </p>
+I enjoy building real-world applications, solving problems with code, and exploring modern technologies.          </p>
           <p>
-            Playing basketball is his zen.
+            Currently, I’m focused on Java, DSA, web development, and turning what I learn into practical projects.
           </p>
 
           <p>Connect on
-            <a href=''> Homepage</a>  / 
-            <a href=''> TradingQnA</a>  /
-           <a href=''> Twitter</a>   </p>
+            <a href='https://www.nirajkgupta.com.np/' > Portfolio</a>  / 
+            <a href='https://www.linkedin.com/in/niraj-gupta-670095292/'> LinkedIn</a>  /
+           <a href='https://github.com/Niraj-dev-Hub'> GitHub</a>   </p>
         </div>
       </div>
     </div>

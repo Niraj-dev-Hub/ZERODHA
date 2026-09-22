@@ -1,36 +1,54 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-
 import axios from "axios";
 
 import GeneralContext from "./GeneralContext";
+import { watchList } from "../data/data";
 
 import "./BuyActionWindow.css";
 
-const BuyActionWindow = ({ uid }) => {
+const BuyActionWindow = ({ uid, mode = "BUY" }) => {
   const [stockQuantity, setStockQuantity] = useState(1);
-
   const [stockPrice, setStockPrice] = useState(0.0);
-  
+
   const formRef = useRef(null);
   const dragState = useRef({ isDragging: false, startX: 0, startY: 0 });
+  const { closeBuyWindow } = useContext(GeneralContext);
 
-  const handleBuyClick = () => {
-    axios.post("https://zerodha-backend-ucqv.onrender.com/newOrder", {
-      name: uid,
-      qty: stockQuantity,
-      price: stockPrice,
-      mode: "BUY",
-    });
+  const stockMeta = watchList.find((stock) => stock.name === uid) || {
+    name: uid,
+    price: 0,
+    percent: "0.00%",
+    isDown: false,
+  };
 
-    closeBuyWindow();
+  useEffect(() => {
+    setStockPrice(Number(stockMeta.price || 0));
+  }, [stockMeta.price]);
+
+  const handleTradeSubmit = async () => {
+    if (mode === "ANALYZE") {
+      closeBuyWindow();
+      return;
+    }
+
+    try {
+      await axios.post("https://zerodha-backend-ucqv.onrender.com/newOrder", {
+        name: uid,
+        qty: Number(stockQuantity),
+        price: Number(stockPrice),
+        mode,
+      });
+      closeBuyWindow();
+      window.location.reload();
+    } catch (error) {
+      console.error("New order failed:", error);
+      window.alert("Unable to place order. Please try again.");
+    }
   };
 
   const handleCancelClick = () => {
     closeBuyWindow();
   };
-
-  const { closeBuyWindow } = useContext(GeneralContext);
 
   useEffect(() => {
     const handlePointerMove = (event) => {
@@ -66,6 +84,8 @@ const BuyActionWindow = ({ uid }) => {
     event.currentTarget.classList.add("dragging");
   };
 
+  const actionName = mode === "BUY" ? "Buy" : mode === "SELL" ? "Sell" : "Analyze";
+
   return (
     <div
       className="container"
@@ -74,40 +94,50 @@ const BuyActionWindow = ({ uid }) => {
       onPointerDown={handlePointerDown}
     >
       <div className="regular-order">
-        <div className="inputs">
-          <fieldset>
-            <legend>Qty.</legend>
-            <input
-              type="number"
-              name="qty"
-              id="qty"
-              onChange={(e) => setStockQuantity(e.target.value)}
-              value={stockQuantity}
-            />
-          </fieldset>
-          <fieldset>
-            <legend>Price</legend>
-            <input
-              type="number"
-              name="price"
-              id="price"
-              step="0.05"
-              onChange={(e) => setStockPrice(e.target.value)}
-              value={stockPrice}
-            />
-          </fieldset>
-        </div>
+        {mode === "ANALYZE" ? (
+          <div className="inputs">
+            <h3>{uid}</h3>
+            <p>Last traded price: ₹{Number(stockMeta.price || 0).toFixed(2)}</p>
+            <p>Change: {stockMeta.percent || "0.00%"}</p>
+            <p>Trend: {stockMeta.isDown ? "Down" : "Up"}</p>
+          </div>
+        ) : (
+          <div className="inputs">
+            <fieldset>
+              <legend>Qty.</legend>
+              <input
+                type="number"
+                name="qty"
+                id="qty"
+                min="1"
+                onChange={(e) => setStockQuantity(Number(e.target.value) || 1)}
+                value={stockQuantity}
+              />
+            </fieldset>
+            <fieldset>
+              <legend>Price</legend>
+              <input
+                type="number"
+                name="price"
+                id="price"
+                step="0.05"
+                onChange={(e) => setStockPrice(Number(e.target.value) || 0)}
+                value={stockPrice}
+              />
+            </fieldset>
+          </div>
+        )}
       </div>
 
       <div className="buttons">
         <span>Margin required ₹140.65</span>
         <div>
-          <Link className="btn btn-blue" onClick={handleBuyClick}>
-            Buy
-          </Link>
-          <Link to="" className="btn btn-grey" onClick={handleCancelClick}>
+          <button type="button" className="btn btn-blue" onClick={handleTradeSubmit}>
+            {mode === "ANALYZE" ? "Close" : actionName}
+          </button>
+          <button type="button" className="btn btn-grey" onClick={handleCancelClick}>
             Cancel
-          </Link>
+          </button>
         </div>
       </div>
     </div>
